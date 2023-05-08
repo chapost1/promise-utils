@@ -92,18 +92,12 @@ const pipeUtil = async (...fns) => {
       return throwInvalidInputError()
     } else if (isAsyncFunction(func)) {
       // Async function, await the result
-      invokedFunctionResult = await func(result)
-      if (isPromise(invokedFunctionResult)) {
-        // Await the result if it's a promise (this is needed for nested async functions)
-        result = await invokedFunctionResult
-      } else {
-        result = invokedFunctionResult
-      }
+      result = await func(result)
     } else if (isSyncFunction(func)) {
       // Sync function, directly invoke it
-      result = invokedFunctionResult = func(result)
+      invokedFunctionResult = func(result)
       if (isPromise(invokedFunctionResult)) {
-        // Await the result if it's a promise (this is needed for nested async functions)
+        // Await the result if it's a promise (in case a promise is returned from a sync function)
         result = await invokedFunctionResult
       } else {
         result = invokedFunctionResult
