@@ -315,6 +315,54 @@ if (error) {
 }
 ```
 
+### promiseUtils.pipe
+
+The `pipe` function allows you to execute a series of functions in order, passing the result of each function as the argument to the next one. It supports **both** synchronous and asynchronous functions, and if any function in the pipe throws an error, the execution is stopped, and the error is propagated.
+
+The function returns an array of two elements:
+- The error (if any) of the function that threw an error
+- The last result of the pipe (if no error was thrown)
+
+Here's an example usage:
+  
+```js
+const promiseUtils = require('promise-utils');
+
+const [error, result] = await promiseUtils.pipe(
+  getUsername,
+  getUser,
+  getPosts,
+  getPostCount
+);
+
+if (error) {
+  console.log(`Failed at index ${failedOperationIndex}: ${error.message}`)
+} else {
+  console.log('All promises succeeded!')
+}
+
+```
+
+> NOTE: To pass argument to the first function, you can just use a lambda function
+Example:
+
+```js
+const promiseUtils = require('promise-utils');
+
+const someConstant = 'Yellow'
+
+await promiseUtils.pipe(
+  () => someConstant,
+  async arg => {
+    await promiseUtils.delay(1000)
+    return arg
+  }
+)
+
+// This will wait for 1 second and then return 'Yellow'
+
+```
+
 ## License
 
 This library is licensed under the MIT License.

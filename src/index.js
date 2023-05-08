@@ -27,5 +27,6 @@ module.exports = Object.freeze({
   each: require('./each'),
   race: require('./race'),
   eachLimit: require('./each-limit'),
-  eachOrderedJit: require('./each-ordered-jit')
+  eachOrderedJit: require('./each-ordered-jit'),
+  pipe: require('./pipe')
 })
