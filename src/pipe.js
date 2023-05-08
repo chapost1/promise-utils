@@ -16,6 +16,10 @@ const isAsyncFunction = func => {
   return func.constructor.name === 'AsyncFunction'
 }
 
+const isPromise = obj => {
+  return obj && obj instanceof Promise
+}
+
 /**
  * @param {...Function|AsyncFunction} fns
  * @returns {boolean}
@@ -68,22 +72,37 @@ const throwInvalidInputError = () => {
  * @throws {Error}
  */
 const pipeUtil = async (...fns) => {
-  let result
+  let result = null
+  let invokedFunctionResult = null
 
   if (fns.length === 0) {
     return throwInvalidInputError()
   }
 
   for (const func of fns) {
-    if (!isFunctionType(func)) {
+    if (isPromise(func)) {
+      // Await the result if it's a promise
+      result = await func
+    } else if (!isFunctionType(func)) {
       return throwInvalidInputError()
-    }
-    if (isAsyncFunction(func)) {
+    } else if (isAsyncFunction(func)) {
       // Async function, await the result
-      result = await func(result)
+      invokedFunctionResult = await func(result)
+      if (isPromise(invokedFunctionResult)) {
+        // Await the result if it's a promise (this is needed for nested async functions)
+        result = await invokedFunctionResult
+      } else {
+        result = invokedFunctionResult
+      }
     } else if (isSyncFunction(func)) {
       // Sync function, directly invoke it
-      result = func(result)
+      result = invokedFunctionResult = func(result)
+      if (isPromise(invokedFunctionResult)) {
+        // Await the result if it's a promise (this is needed for nested async functions)
+        result = await invokedFunctionResult
+      } else {
+        result = invokedFunctionResult
+      }
     } else {
       return throwInvalidInputError()
     }

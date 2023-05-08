@@ -65,4 +65,38 @@ describe('pipe', () => {
     expect(error).toBeNull()
     expect(result).toEqual(15)
   })
+
+  test.concurrent('should work with pure promises (resolved)', async () => {
+    const [error, result] = await pipe(
+      Promise.resolve('first'),
+      first => {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve(`${first} second`)
+          }, 100)
+        })
+      },
+      second => `${second} third`
+    )
+
+    expect(error).toBeNull()
+    expect(result).toEqual('first second third')
+  })
+
+  test.concurrent('should work with pure promises (rejected)', async () => {
+    const [error] = await pipe(
+      Promise.reject(new Error('Something went wrong')),
+      first => {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve(`${first} second`)
+          }, 100)
+        })
+      },
+      second => `${second} third`
+    )
+
+    expect(error).toBeInstanceOf(Error)
+    expect(error.message).toEqual('Something went wrong')
+  })
 })
