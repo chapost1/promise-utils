@@ -42,6 +42,7 @@ const promiseUtils = require('promise-utils');
 - [eachLimit](#promiseutilseachlimit)
 - [eachOrderedJit](#promiseutilseachorderedjit)
 - [executeInReverseOrder](#promiseutilsexecuteinreverseorder)
+- [pipe](#promiseutilspipe)
 
 
 ### promiseUtils.wrap

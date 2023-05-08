@@ -16,6 +16,11 @@ const isAsyncFunction = func => {
   return func.constructor.name === 'AsyncFunction'
 }
 
+/**
+ * @param {unknown} obj
+ * @returns {boolean}
+ * @private
+ */
 const isPromise = obj => {
   return obj && obj instanceof Promise
 }
