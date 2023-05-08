@@ -1,7 +1,7 @@
 # Promise Utils
 
 ![Node](https://img.shields.io/badge/node-%3E%3D%208.0.0-green)
-![LTS](https://img.shields.io/badge/LTS-v0.0.1-blue)
+![LTS](https://img.shields.io/badge/LTS-v0.0.2-blue)
 
 This package provides a set of utility functions to simplify common tasks related to working with promises. It offers a simple syntax for error handling and aims to reduce the potential for low-level bugs. It should make working with promises easier.
 
@@ -11,12 +11,12 @@ This package provides a set of utility functions to simplify common tasks relate
 
 #### In your package.json file:
 ```json
-"promise-utils": "git+https://github.com/chapost1/promise-utils.git#v0.0.1"
+"promise-utils": "git+https://github.com/chapost1/promise-utils.git#v0.0.2"
 ```
 
 #### Or using NPM:
 ```sh
-npm install git+https://github.com/chapost1/promise-utils.git#v0.0.1
+npm install git+https://github.com/chapost1/promise-utils.git#v0.0.2
 ```
 
 ## Usage
