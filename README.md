@@ -345,6 +345,7 @@ if (error) {
 ```
 
 > NOTE: To pass argument to the first function, you can just use a lambda function
+
 Example:
 
 ```js
