@@ -2,9 +2,10 @@ const delay = require('../src/delay')
 const pipe = require('../src/pipe')
 
 describe('pipe', () => {
-  test.concurrent('should throw an error if no functions are passed', async () => {
-    const [error] = await pipe()
-    expect(error).toBeInstanceOf(Error)
+  test.concurrent('should not throw an error if no functions are passed', async () => {
+    const [error, data] = await pipe()
+    expect(error).toBeNull()
+    expect(data).toBeUndefined()
   })
 
   test.concurrent('should throw an error if any of the arguments is not a function', async () => {
@@ -68,7 +69,7 @@ describe('pipe', () => {
 
   test.concurrent('should work with pure promises (resolved)', async () => {
     const [error, result] = await pipe(
-      Promise.resolve('first'),
+      () => Promise.resolve('first'),
       first => {
         return new Promise(resolve => {
           setTimeout(() => {
@@ -85,7 +86,7 @@ describe('pipe', () => {
 
   test.concurrent('should work with pure promises (rejected)', async () => {
     const [error] = await pipe(
-      Promise.reject(new Error('Something went wrong')),
+      () => Promise.reject(new Error('Something went wrong')),
       first => {
         return new Promise(resolve => {
           setTimeout(() => {

@@ -77,30 +77,20 @@ const throwInvalidInputError = () => {
  * @throws {Error}
  */
 const pipeUtil = async (...fns) => {
-  let result = null
-  let invokedFunctionResult = null
-
-  if (fns.length === 0) {
-    return throwInvalidInputError()
-  }
+  let result
 
   for (const func of fns) {
-    if (isPromise(func)) {
-      // Await the result if it's a promise
-      result = await func
-    } else if (!isFunctionType(func)) {
+    if (!isFunctionType(func)) {
       return throwInvalidInputError()
     } else if (isAsyncFunction(func)) {
       // Async function, await the result
       result = await func(result)
     } else if (isSyncFunction(func)) {
       // Sync function, directly invoke it
-      invokedFunctionResult = func(result)
-      if (isPromise(invokedFunctionResult)) {
+      result = func(result)
+      if (isPromise(result)) {
         // Await the result if it's a promise (in case a promise is returned from a sync function)
-        result = await invokedFunctionResult
-      } else {
-        result = invokedFunctionResult
+        result = await result
       }
     } else {
       return throwInvalidInputError()
